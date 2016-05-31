@@ -1,0 +1,32 @@
+{
+	"name": "xd/queue-consumers-manager",
+	"keywords": ["queue","consumers", "smooth", "restart", "shutdown"],
+	"homepage": "https://github.com/ganxiangdong/php-consumers-manager",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "xiangdonggan",
+			"email": "phpwww@126.com",
+			"role": "Developer"
+		}
+	],
+    "require": {
+		"php": ">=5.4.0"
+    },
+    
+    "repositories": [
+	    {
+	      "type": "composer",
+	      "url": "https://packagist.phpcomposer.com"
+	    },
+	    {
+	      "packagist": false
+	    }
+	],
+	
+	"autoload": {
+        "psr-4": {
+            "Xd\\QueueConsumersManager\\": "src/"
+        }
+    }
+}
