@@ -1,4 +1,4 @@
-comsumers manager
+consumers manager
 ======
 一个简单的队列消费者进程管理轮子，主要为了解决平滑重启、平滑关闭、进程自动平滑重启等问题
 
@@ -14,7 +14,7 @@ posix 扩展 此扩展不是必须的，只是在记录运行日志时会详细�
 
 安装
 ------
-composer地址：https://packagist.org/packages/xd/queue-comsumers-manager
+composer地址：https://packagist.org/packages/xd/queue-consumers-manager
 
 权限 
 ------
@@ -25,22 +25,20 @@ composer地址：https://packagist.org/packages/xd/queue-comsumers-manager
 1. 创建一个消费者
 
 	```
-	<?php
-	class myComsumer extends \Xd\QueueComsumersManager\Comsumer
+	class myConsumer extends \Xd\QueueConsumersManager\Consumer
 	{
 	    //开始运行,当队列开始后会调用此方法
 	    public function run()
 	    {
 	        //模拟获取,消费队列消息
 	        while(true) {
-	            //处理业务
-	            //每处理完一次就通知管理者，这句代码是必须的
-	            \Xd\QueueComsumersManager\Manager::noticeFetchedQuqueMsg();
+	            sleep(2);//模拟处理业务的耗时处理
+	            \Xd\QueueConsumersManager\Manager::noticeFetchedQueueMsg();
 	        }
 	    }
 	
 	    /**
-	     * 关闭comsumer
+	     * 关闭consumer
 	     */
 	    public function shutdown()
 	    {
@@ -48,25 +46,23 @@ composer地址：https://packagist.org/packages/xd/queue-comsumers-manager
 	    }
 	}
 	
-	//实例化消费者
-	$mycomsumer = new myComsumer();
-	//获取管理者对象
-	$comsumerManager = \Xd\QueueComsumersManager\Manager::getInstance($mycomsumer);
-	$comsumerManager->receivedMax = 1000;//设置每个comsumer最多请求多少次消息后重启,默认为1000
-	//开始运行
-	$comsumerManager->run();
+	$myConsumer = new myConsumer();
+	
+	$consumerManager = \Xd\QueueConsumersManager\Manager::getInstance($myConsumer);
+	$consumerManager->receivedMax = 1000;//设置每个consumer最多请求多少次消息后重启,默认为1000
+	$consumerManager->run();
 	
 	```
 2. 启动   
-	执行对应vendor包中的start.sh,  第三个参数为消费者脚本路径（目前只支持绝对路径），第四个参数为开启的进程个数，运行后中途可以随意再增加，运行日志的名称为comsumer脚本的文件名+.log，位于/var/log目录下  
+	执行对应vendor包中的start.sh,  第三个参数为消费者脚本路径（目前只支持绝对路径），第四个参数为开启的进程个数，运行后中途可以随意再增加，运行日志的名称为consumer脚本的文件名+.log，位于/var/log目录下  
 	
 	``` 
-	sh vendor/xd/queue-comsumers-manager/bins/start.sh /www/queue/test.php 10
+	sh vendor/xd/queue-consumers-manager/bins/start.sh /www/queue/test.php 10
 	```
 	输出
 	
 	```
-	 comsumer运行日志文件:/var/log/test.php.log
+	 consumer运行日志文件:/var/log/test.php.log
 	 正在启动第1个进程...
 	 正在启动第2个进程...
 	 正在启动第3个进程...
@@ -84,12 +80,12 @@ composer地址：https://packagist.org/packages/xd/queue-comsumers-manager
 	执行对应vendor包中的status.sh,  第三个参数为消费者脚本路径（目前只支持绝对路径）
 	
 	```
-	sh vendor/xd/queue-comsumers-manager/bins/status.sh /www/queue/test.php
+	sh vendor/xd/queue-consumers-manager/bins/status.sh /www/queue/test.php
 	```
 	输出
 	
 	```
-	 当前共有 10个 comsumer运行,如果下面展示的comsumer行数在多次查看状态下一直少于此数量,则有可能存在comsumer阻塞死了
+	 当前共有 10个 consumer运行,如果下面展示的consumer行数在多次查看状态下一直少于此数量,则有可能存在consumer阻塞死了
 	 状态说明:第一列:开始时间,第二列:运行时间,第三列:请求队列数次,第四列:使用内存,第五列:内存峰值
 	 正在等待进程反馈状态,获取到结果后会自动依次展示在下文,请稍候...
 	
@@ -128,7 +124,7 @@ composer地址：https://packagist.org/packages/xd/queue-comsumers-manager
 	执行对应vendor包中的shutdown.sh, 第三个参数为消费者脚本路径（目前只支持绝对路径）  
 	
 	```
-	sh vendor/xd/queue-comsumers-manager/bins/shutdown.sh /www/queue/test.php
+	sh vendor/xd/queue-consumers-manager/bins/shutdown.sh /www/queue/test.php
 	```
 	
 	输出
