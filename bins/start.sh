@@ -74,7 +74,7 @@ let runingProcessNum=runingProcessNum-1
 #执行对应的命令
 runLogFileName=${appPath##*/}
 runLogFilePath="/var/log/$runLogFileName.log"
-echo -e "\033[33m comsumer运行日志文件:$runLogFilePath \033[0m"
+echo -e "\033[33m consumer运行日志文件:$runLogFilePath \033[0m"
 for ((i=1;i<=processNum;i++))
 do
     php "$appPath" >> "$runLogFilePath" &
@@ -92,7 +92,7 @@ then
 fi
 if [ "$startedProcessNum" -lt "$processNum" ]
 then
-    echo -e "\033[33m 部分comsumer启动失败,此次成功启动了$startedProcessNum个comsumer \033[0m"
+    echo -e "\033[33m 部分consumer启动失败,此次成功启动了$startedProcessNum个consumer \033[0m"
     exit
 fi
 
