@@ -82,8 +82,8 @@ do
 done
 
 #新成功启动的进程数量是否等于指定启动的数量
-currentProcessNum=`ps -o pid -C php | grep "$appPath" | wc -l`
-let startedProcessNum=currentProcessNum-1-runingProcessNum
+currentProcessNum=`ps -o pid,cmd -C php | grep "$appPath" | wc -l`
+let startedProcessNum=currentProcessNum-runingProcessNum
 if [ "$startedProcessNum" == "0" ]
 then
     echo -e "\033[31m 启动失败,你可以查看日志: $runLogFilePath \033[0m"
