@@ -22,8 +22,7 @@ then
 fi
 
 #是否正在运行
-processNum=`ps -o pid -C "php $appPath" | wc -l`
-let processNum=processNum-1
+processNum=`ps -o pid,cmd -C php | grep "$appPath" | wc -l`
 if [ "$processNum" -lt 1 ]
 then
     echo -e "\033[33m 没有运行! \033[0m"

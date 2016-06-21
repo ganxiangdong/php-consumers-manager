@@ -68,8 +68,7 @@ then
 fi
 
 #开始前正在运行的个数
-runingProcessNum=`ps -o pid -C "php $appPath" | wc -l`
-let runingProcessNum=runingProcessNum-1
+runingProcessNum=`ps -o pid,cmd -C php | grep "$appPath" | wc -l`
 
 #执行对应的命令
 runLogFileName=${appPath##*/}
@@ -83,7 +82,7 @@ do
 done
 
 #新成功启动的进程数量是否等于指定启动的数量
-currentProcessNum=`ps -o pid -C "php $appPath" | wc -l`
+currentProcessNum=`ps -o pid -C php | grep "$appPath" | wc -l`
 let startedProcessNum=currentProcessNum-1-runingProcessNum
 if [ "$startedProcessNum" == "0" ]
 then

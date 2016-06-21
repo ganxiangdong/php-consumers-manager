@@ -19,12 +19,8 @@ then
     exit
 fi
 
-#获取运行队列的pid
-pidRows=`ps -o pid -C "php $appPath"`
-
 #是否正在运行
-processNum=`ps -o pid -C "php $appPath" | wc -l`
-let processNum=processNum-1
+processNum=`ps -o pid,cmd -C php | grep "$appPath" | wc -l`
 if [ "$processNum" -lt 1 ]
 then
     echo -e "\033[33m 没有运行! \033[0m"
@@ -42,8 +38,7 @@ fi
 
 #循环检测是否关闭完成,直到完成为止
 while [ 1 "=" 1 ];do
-    processNum=`ps -o pid -C "php $appPath" | wc -l`
-    let processNum=processNum-1
+    processNum=`ps -o pid,cmd -C php | grep "$appPath" | wc -l`
     if [ "$processNum" -gt 0 ]
     then
         echo -e "\033[33m 还有$processNum个进程等待关闭,请稍候... \033[0m"
